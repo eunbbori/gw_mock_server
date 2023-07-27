@@ -26,6 +26,7 @@ export const getTokens = (mode: GetTokensMode, params: IGetTokensParam): ITokens
     userName: user.name,
     departmentName: department?.departmentName,
     photoUrl: user.photoUrl || "",
+    adminYn: user.adminYn,
   };
 
   const options = {

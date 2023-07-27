@@ -34,25 +34,37 @@ export interface IEmployeeWorking {
   endAt?: Date;
 }
 
+export interface IEmployeeWorkingPage {
+  content: IEmployeeWorking[];
+  totalElements: number;
+  totalPages: number;
+  page: number;
+  size: number;
+}
+
 export interface IEmployeeWorkingCondition {
   userId: string;
   name: string;
   departmentId: number;
+  position: string;
   workingDateFrom: String;
   workingDateTo: String;
   workingType: string[];
 }
 
-export interface IEmployeeInput {
+export interface IEmployeeModInput {
   userId: string;
   name: string;
   email: string;
   contractType: string;
   phone: string;
   startDate?: Date;
-  passwd?: string;
   departmentId: number;
   position: string;
+}
+
+export interface IEmployeeInput extends IEmployeeModInput {
+  passwd?: string;
 }
 
 export interface IEmployee extends IEmployeeInput {
@@ -60,8 +72,14 @@ export interface IEmployee extends IEmployeeInput {
   department?: IDepartment;
   photoUrl?: string;
   refreshToken?: string;
+  adminYn?: string;
 }
 
+export interface IFile {
+  filename: string;
+  mimetype: string;
+  encoding: string;
+}
 // Authenticate
 export type GetTokensMode = "authenticate" | "refresh";
 export type TokenType = "access" | "refresh";
@@ -104,6 +122,7 @@ export interface IPayload {
   userName: string;
   departmentName: string;
   photoUrl: string;
+  adminYn: string;
   iat: number;
   exp: number;
 }

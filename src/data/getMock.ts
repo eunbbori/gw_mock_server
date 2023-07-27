@@ -1,7 +1,7 @@
 import { GraphQLError } from "graphql";
 import { employeeWorkingToday } from "./data.js";
 import { departments, employees } from "./data.js";
-import { IDepartment, IEmployee, IEmployeeWorking } from "./types.js";
+import { IDepartment, IEmployee, IEmployeeWorking, IEmployeeWorkingPage } from "./types.js";
 import { isToday } from "date-fns";
 
 const WorkingType = [
@@ -15,18 +15,18 @@ const WorkingType = [
   "WORK",
   "WORK",
   "WORK",
-  "FULL_DAYOFF",
-  "FULL_DAYOFF",
-  "FULL_DAYOFF",
-  "FULL_DAYOFF",
-  "AM_DAYOFF",
-  "AM_DAYOFF",
-  "PM_DAYOFF",
+  "HOLIDAY",
+  "HOLIDAY",
+  "HOLIDAY",
+  "HOLIDAY",
+  "PM_WORK",
+  "PM_WORK",
+  "AM_WORK",
   "SICK",
   "MILITARY",
 ];
 
-const noneFullDayoffs = ["WORK", "AM_DAYOFF", "PM_DAYOFF"];
+const noneFullDayoffs = ["WORK", "PM_WORK", "AM_WORK"];
 
 const sampleStartAt = [
   [9, 0],
@@ -78,12 +78,19 @@ const sampleEndAtNoon = [
   [14, 0],
 ];
 
-export const getEmployeeWorkingConditional = (employees: IEmployee[], startDt: String, endDt: String, workingType: String[]): IEmployeeWorking[] => {
-  if (employees.length === 0) return [];
+export const getEmployeeWorkingConditional = (
+  employees: IEmployee[],
+  startDt: String,
+  endDt: String,
+  workingType: String[],
+  page: number,
+  size: number
+): IEmployeeWorkingPage => {
+  if (employees.length === 0) return { content: [], totalElements: 0, totalPages: 0, page: 0, size: 0 };
 
   const startDate = new Date(parseInt(startDt.substring(0, 4)), parseInt(startDt.substring(5, 7)) - 1, parseInt(startDt.substring(8, 11)));
   const endDate = new Date(parseInt(endDt.substring(0, 4)), parseInt(endDt.substring(5, 7)) - 1, parseInt(endDt.substring(8, 11)));
-  const employeeWorkings: IEmployeeWorking[] = [];
+  let employeeWorkings: IEmployeeWorking[] = [];
 
   employees.forEach((e) => {
     let currDate = new Date(startDate.getTime());
@@ -96,9 +103,15 @@ export const getEmployeeWorkingConditional = (employees: IEmployee[], startDt: S
     }
   });
 
-  return employeeWorkings
+  employeeWorkings = employeeWorkings
     .filter((e) => !workingType || workingType.length === 0 || workingType.includes(e.workingType || ""))
     .sort((e1, e2) => (!e1.startAt ? 1 : !e2.startAt ? -1 : e1.startAt < e2.startAt ? 1 : e1.startAt === e2.startAt ? 0 : -1));
+
+  const totalElements = employeeWorkings.length;
+  const totalPages = Math.ceil(totalElements / size);
+  if (page > totalPages) page = totalPages;
+
+  return { content: employeeWorkings.slice((page - 1) * size, Math.min(page * size, totalElements)), totalElements, totalPages, page: page, size };
 };
 
 export const mockTodayEmployeeWorking = (employee: IEmployee): IEmployeeWorking => {
@@ -142,11 +155,11 @@ const mockEmployeeWorking = (employee: IEmployee, workingDate: Date): IEmployeeW
     if (workingType === "WORK") {
       startAtTime = sampleStartAt[Math.floor(Math.random() * sampleStartAt.length)];
       endAtTime = sampleEndAt[Math.floor(Math.random() * sampleEndAt.length)];
-    } else if (workingType === "AM_DAYOFF") {
+    } else if (workingType === "PM_WORK") {
       startAtTime = sampleStartAtNoon[Math.floor(Math.random() * sampleStartAtNoon.length)];
       endAtTime = sampleEndAt[Math.floor(Math.random() * sampleEndAt.length)];
     } else {
-      //if(workingType==="PM_DAYOFF")
+      //if(workingType==="AM_WORK")
       startAtTime = sampleStartAt[Math.floor(Math.random() * sampleStartAt.length)];
       endAtTime = sampleEndAtNoon[Math.floor(Math.random() * sampleEndAtNoon.length)];
     }

@@ -39,8 +39,9 @@ export const verifyToken = (mode: TokenType, token: string) => {
 
 export const login = ({ email, passwd }: ILogin, { res }: IMyContext): IAuthInfo => {
   console.log("login start:" + email + "," + passwd);
-  const userId = employees.find((e) => e.email === email)?.userId;
-  if (!userId) throw new GraphQLError("IMPOSSIBLE");
+  const employee = employees.find((e) => e.email === email);
+  if (!employee) throw new GraphQLError("IMPOSSIBLE");
+  const userId = employee.userId;
 
   const tokens: ITokens = getTokens("authenticate", { userId, passwd });
 

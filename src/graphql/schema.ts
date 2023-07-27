@@ -5,16 +5,14 @@
 const typeDefs = `#graphql
   # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
   scalar Date
+  scalar Upload
 
-  enum WorkingType {
-    WORK
-    FULL_DAYOFF
-    AM_DAYOFF
-    PM_DAYOFF
-    SICK
-    MILITARY
+  type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
   }
-
+  
   type Code {
     code: String
     name: String
@@ -27,7 +25,7 @@ const typeDefs = `#graphql
   }
 
   type Employee {
-    employeeId: ID
+    employeeId: Int
     userId: String
     name: String
     position: String
@@ -37,6 +35,17 @@ const typeDefs = `#graphql
     email: String
     startDate: Date
     photoUrl: String
+  }
+
+  input EmployeeModInput {
+    userId: String
+    name: String
+    position: String
+    departmentId: Int
+    contractType: String
+    phone: String
+    email: String
+    startDate: Date
   }
 
   input EmployeeInput {
@@ -60,9 +69,10 @@ const typeDefs = `#graphql
     userId: String
     name: String
     departmentId: ID
+    position: String
     workingDateFrom: String
     workingDateTo: String
-    workingType: [WorkingType]
+    workingType: [String]
   }
 
   type EmployeeWorking {
@@ -72,16 +82,24 @@ const typeDefs = `#graphql
     position: String
 		department: Department
     workingDate: Date
-    workingType: WorkingType
+    workingType: String
     startAt: Date
     endAt: Date
+  }
+
+  type EmployeeWorkingPage {
+    content: [EmployeeWorking]
+    totalElements: Int
+    totalPages: Int
+    page: Int
+    size: Int
   }
 
   type AuthInfo {
     accessToken: String
     startAt: Date
     endAt: Date
-    workingType: WorkingType 
+    workingType: String 
   }
 
   # The "Query" type is special: it lists all of the available queries that
@@ -91,9 +109,10 @@ const typeDefs = `#graphql
     codes(parents: [String]): [Codes]
     departments: [Department]
     employees: [Employee]
-    employee(userId: String): Employee
+    employee(employeeId: Int, userId: String): Employee
     employeeWorking(dt: String): [EmployeeWorking]
-    employeeWorkingConditional(searchCondition: EmployeeWorkingCondition): [EmployeeWorking]
+    employeeWorkingConditional(searchCondition: EmployeeWorkingCondition, page: Int = 1, size: Int = 10): EmployeeWorkingPage
+    checkUserIdDuplication(userId: String!): Boolean
   }
 
   type Mutation {
@@ -103,7 +122,10 @@ const typeDefs = `#graphql
     goToWork: EmployeeWorking
     leaveWork: EmployeeWorking
 
-    addEmployee(input: EmployeeInput): Employee
+    addEmployee(input: EmployeeInput, file: Upload): Employee
+    modEmployee(employeeId: Int, input: EmployeeModInput, file:Upload): Employee
+    changePwd(employeeId: Int, pwd: String): Employee
+    singleUpload(employeeId: Int, file: Upload!): File!
   }
 
   type Subscription {

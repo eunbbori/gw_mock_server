@@ -10,8 +10,9 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 import { WebSocketServer } from "ws";
 import { useServer } from "graphql-ws/lib/use/ws";
 
-import { JwtPayload } from "jsonwebtoken";
+import graphqlUploadExpress from "graphql-upload/graphqlUploadExpress.mjs";
 
+import { JwtPayload } from "jsonwebtoken";
 import { typeDefs } from "./graphql/schema.js";
 import resolvers from "./graphql/resolver.js";
 import { IEmployee, IMyContext } from "./data/types.js";
@@ -68,6 +69,7 @@ app.use(cookieParser());
 app.use(express.static("public"));
 app.use(
   "/",
+  graphqlUploadExpress({ maxFileSize: 10_000_000, maxFiles: 10 }),
   cors<cors.CorsRequest>({
     //origin: process.env.CORS_ORIGIN_URL.split(","),
     origin: ["http://localhost:3000", "http://localhost:3001", "http://localhost:3002"],
@@ -105,6 +107,9 @@ app.use(
     },
   })
 );
+
+const firstOperationDefinition = (ast: any) => ast.definitions[0];
+const firstFieldValueNameFromOperation = (operationDefinition: any) => operationDefinition.selectionSet.selections[0].name.value;
 
 /************************************** 
   error:
