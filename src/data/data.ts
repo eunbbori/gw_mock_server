@@ -29,48 +29,8 @@ export const codes: ICodeWithParent[] = [
   },
   {
     parentCode: "POSITION",
-    code: "CHIEF",
-    name: "CEO",
-  },
-  {
-    parentCode: "POSITION",
-    code: "PRESIDENT",
-    name: "사장",
-  },
-  {
-    parentCode: "POSITION",
-    code: "VICE_PRESIDENT",
-    name: "부사장",
-  },
-  {
-    parentCode: "POSITION",
-    code: "SENIOR_MANAGING_DIRECTOR",
-    name: "전무",
-  },
-  {
-    parentCode: "POSITION",
-    code: "MANAGING_DIRECTOR",
-    name: "상무",
-  },
-  {
-    parentCode: "POSITION",
-    code: "DIRECTOR",
-    name: "이사",
-  },
-  {
-    parentCode: "POSITION",
-    code: "GENERAL_MANAGER",
-    name: "부장",
-  },
-  {
-    parentCode: "POSITION",
-    code: "DEPUTY_MANAGER",
-    name: "차장",
-  },
-  {
-    parentCode: "POSITION",
-    code: "MANAGER",
-    name: "과장",
+    code: "MEMBER",
+    name: "사원",
   },
   {
     parentCode: "POSITION",
@@ -79,9 +39,50 @@ export const codes: ICodeWithParent[] = [
   },
   {
     parentCode: "POSITION",
-    code: "MEMBER",
-    name: "사원",
+    code: "MANAGER",
+    name: "과장",
   },
+  {
+    parentCode: "POSITION",
+    code: "DEPUTY_MANAGER",
+    name: "차장",
+  },
+  {
+    parentCode: "POSITION",
+    code: "GENERAL_MANAGER",
+    name: "부장",
+  },
+  {
+    parentCode: "POSITION",
+    code: "DIRECTOR",
+    name: "이사",
+  },
+  {
+    parentCode: "POSITION",
+    code: "MANAGING_DIRECTOR",
+    name: "상무",
+  },
+  {
+    parentCode: "POSITION",
+    code: "SENIOR_MANAGING_DIRECTOR",
+    name: "전무",
+  },
+  {
+    parentCode: "POSITION",
+    code: "VICE_PRESIDENT",
+    name: "부사장",
+  },
+  {
+    parentCode: "POSITION",
+    code: "PRESIDENT",
+    name: "사장",
+  },
+  {
+    parentCode: "POSITION",
+    code: "CHIEF",
+    name: "CEO",
+  },
+
   {
     parentCode: "-",
     code: "WORKING_TYPE",

@@ -29,7 +29,7 @@ const typeDefs = `#graphql
     userId: String
     name: String
     position: String
-		department: Department
+  department: Department
     contractType: String
     phone: String
     email: String
@@ -61,14 +61,14 @@ const typeDefs = `#graphql
   }
 
   type Department {
-    departmentId: ID
+    departmentId: Int
     departmentName: String
   }
 
   input EmployeeWorkingCondition {
     userId: String
     name: String
-    departmentId: ID
+    departmentId: Int
     position: String
     workingDateFrom: String
     workingDateTo: String
@@ -80,7 +80,7 @@ const typeDefs = `#graphql
     userId: String
     name: String
     position: String
-		department: Department
+  department: Department
     workingDate: Date
     workingType: String
     startAt: Date
