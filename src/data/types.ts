@@ -23,7 +23,7 @@ export interface IDepartment {
 
 // Employee
 export interface IEmployeeWorking {
-  employeeId: number;
+  employeeId: string;
   userId: string;
   name: string;
   position: string;
@@ -64,11 +64,11 @@ export interface IEmployeeModInput {
 }
 
 export interface IEmployeeInput extends IEmployeeModInput {
+  employeeId: string;
   passwd?: string;
 }
 
 export interface IEmployee extends IEmployeeInput {
-  employeeId: number;
   department?: IDepartment;
   photoUrl?: string;
   refreshToken?: string;

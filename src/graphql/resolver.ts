@@ -123,15 +123,14 @@ const resolvers = {
       if (expired) throw new GraphQLError("EXPIRED");
       if (user.adminYn === "NO") throw new GraphQLError("IMPOSSIBLE");
 
-      const employeeId = addEmployee(args.input);
-      const employee = employees.find((e) => e.employeeId === employeeId);
+      addEmployee(args.input);
+      const savedEmployee = employees.find((e) => e.employeeId === args.input.employeeId);
+      savedEmployee && args.file && persistFile(savedEmployee, args.file);
 
-      employee && args.file && persistFile(employee, args.file);
-
-      return employee;
+      return savedEmployee;
     },
 
-    modEmployee: (_: any, args: { employeeId: number; input: IEmployeeModInput; file?: Upload }, { user, expired }: IMyContext) => {
+    modEmployee: (_: any, args: { employeeId: string; input: IEmployeeModInput; file?: Upload }, { user, expired }: IMyContext) => {
       if (!user) throw new GraphQLError("NO TOKEN");
       if (expired) throw new GraphQLError("EXPIRED");
       if (user.adminYn === "NO") throw new GraphQLError("IMPOSSIBLE");
@@ -143,7 +142,7 @@ const resolvers = {
       return employee;
     },
 
-    changePwd: (_: any, args: { employeeId: number; pwd: string }, { user, expired }: IMyContext) => {
+    changePwd: (_: any, args: { employeeId: string; pwd: string }, { user, expired }: IMyContext) => {
       if (!user) throw new GraphQLError("NO TOKEN");
       if (expired) throw new GraphQLError("EXPIRED");
 
@@ -186,7 +185,7 @@ const resolvers = {
       return employeeWorking;
     },
 
-    singleUpload: (_: any, args: { employeeId: number; file: Upload }, { user, expired }: IMyContext): IFile => {
+    singleUpload: (_: any, args: { employeeId: string; file: Upload }, { user, expired }: IMyContext): IFile => {
       if (!user) throw new GraphQLError("NO TOKEN");
       if (expired) throw new GraphQLError("EXPIRED");
 
@@ -213,7 +212,6 @@ const resolvers = {
 const persistFile = (employee: IEmployee, file: Upload) => {
   const { filename } = saveFile(file, employee.userId);
   employee.photoUrl = "upload/" + filename;
-  console.log("pppppppppphto = " + "upload/" + filename);
 };
 
 export default resolvers;

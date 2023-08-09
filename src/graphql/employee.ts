@@ -7,10 +7,11 @@ import {
   IFile,
 } from "../data/types.js";
 import fs from "fs";
+import { GraphQLError } from "graphql";
 
 const uploadFolder = "/work/groupware-mock-server/public/upload/";
 
-export const getEmployee = (id: Number): IEmployee | undefined => {
+export const getEmployee = (id: string): IEmployee | undefined => {
   const employee = employees.find((e) => e.employeeId === id);
   if (!employee) return undefined;
 
@@ -20,23 +21,16 @@ export const getEmployee = (id: Number): IEmployee | undefined => {
   return { ...employee, department, passwd: "" };
 };
 
-export const addEmployee = (input: IEmployeeInput): number | undefined => {
-  const maxId = employees
-    .map((e) => e.employeeId)
-    .reduce((max, curr) => (curr > max ? curr : max), 0);
+export const addEmployee = (input: IEmployeeInput): IEmployee | undefined => {
+  const dupEmployee = employees.find((e) => e.employeeId === input.employeeId);
+  if (dupEmployee) throw new GraphQLError("ID DUPLICATION");
 
-  const employeeId = maxId + 1;
-  employees.push({
-    employeeId: employeeId,
-    ...input,
-  });
-
-  const employee = getEmployee(employeeId);
-  return employee?.employeeId;
+  employees.push(input);
+  return getEmployee(input.employeeId);
 };
 
 export const modEmployee = (
-  id: number,
+  id: string,
   input: IEmployeeModInput
 ): IEmployee | undefined => {
   const employee = employees.find((e) => e.employeeId === id);
@@ -57,7 +51,7 @@ export const modEmployee = (
   return employee;
 };
 
-export const changePwd = (id: number, pwd: string): IEmployee | undefined => {
+export const changePwd = (id: string, pwd: string): IEmployee | undefined => {
   const employee = employees.find((e) => e.employeeId === id);
   if (!employee) return undefined;
 

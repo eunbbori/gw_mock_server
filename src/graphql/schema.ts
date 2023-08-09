@@ -25,11 +25,11 @@ const typeDefs = `#graphql
   }
 
   type Employee {
-    employeeId: Int
+    employeeId: String
     userId: String
     name: String
     position: String
-  department: Department
+		department: Department
     contractType: String
     phone: String
     email: String
@@ -49,6 +49,7 @@ const typeDefs = `#graphql
   }
 
   input EmployeeInput {
+    employeeId: String
     userId: String
     name: String
     position: String
@@ -76,11 +77,11 @@ const typeDefs = `#graphql
   }
 
   type EmployeeWorking {
-    employeeId: Int
+    employeeId: String
     userId: String
     name: String
     position: String
-  department: Department
+		department: Department
     workingDate: Date
     workingType: String
     startAt: Date
@@ -109,7 +110,7 @@ const typeDefs = `#graphql
     codes(parents: [String]): [Codes]
     departments: [Department]
     employees: [Employee]
-    employee(employeeId: Int, userId: String): Employee
+    employee(employeeId: String, userId: String): Employee
     employeeWorking(dt: String): [EmployeeWorking]
     employeeWorkingConditional(searchCondition: EmployeeWorkingCondition, page: Int = 1, size: Int = 10): EmployeeWorkingPage
     checkUserIdDuplication(userId: String!): Boolean
@@ -123,9 +124,9 @@ const typeDefs = `#graphql
     leaveWork: EmployeeWorking
 
     addEmployee(input: EmployeeInput, file: Upload): Employee
-    modEmployee(employeeId: Int, input: EmployeeModInput, file:Upload): Employee
-    changePwd(employeeId: Int, pwd: String): Employee
-    singleUpload(employeeId: Int, file: Upload!): File!
+    modEmployee(employeeId: String, input: EmployeeModInput, file:Upload): Employee
+    changePwd(employeeId: String, pwd: String): Employee
+    singleUpload(employeeId: String, file: Upload!): File!
   }
 
   type Subscription {

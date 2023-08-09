@@ -139,7 +139,7 @@ export const employeeWorkingToday: IEmployeeWorking[] = [];
 
 export const employees: IEmployee[] = [
   {
-    employeeId: 1,
+    employeeId: "1",
     userId: "gildong",
     name: "홍길동",
     position: "MEMBER",
@@ -153,7 +153,7 @@ export const employees: IEmployee[] = [
     adminYn: "YES",
   },
   {
-    employeeId: 2,
+    employeeId: "2",
     userId: "heungmin",
     name: "손흥민",
     position: "ASSISTANT",
@@ -167,7 +167,7 @@ export const employees: IEmployee[] = [
     adminYn: "NO",
   },
   {
-    employeeId: 3,
+    employeeId: "3",
     userId: "michael",
     name: "마이클 잭슨",
     position: "GENERAL_MANAGER",
@@ -181,7 +181,7 @@ export const employees: IEmployee[] = [
     adminYn: "YES",
   },
   {
-    employeeId: 4,
+    employeeId: "4",
     userId: "lim",
     name: "임꺽정",
     position: "MEMBER",
@@ -195,7 +195,7 @@ export const employees: IEmployee[] = [
     adminYn: "NO",
   },
   {
-    employeeId: 5,
+    employeeId: "5",
     userId: "bts",
     name: "BTS",
     position: "MANAGER",
@@ -209,7 +209,7 @@ export const employees: IEmployee[] = [
     adminYn: "NO",
   },
   {
-    employeeId: 6,
+    employeeId: "6",
     userId: "lee",
     name: "이순신",
     position: "DEPUTY_MANAGER",
@@ -223,7 +223,7 @@ export const employees: IEmployee[] = [
     adminYn: "NO",
   },
   {
-    employeeId: 7,
+    employeeId: "7",
     userId: "doolie",
     name: "둘리",
     position: "MEMBER",
@@ -237,7 +237,7 @@ export const employees: IEmployee[] = [
     adminYn: "NO",
   },
   {
-    employeeId: 8,
+    employeeId: "8",
     userId: "hulk",
     name: "헐크",
     position: "ASSISTANT",
@@ -251,7 +251,7 @@ export const employees: IEmployee[] = [
     adminYn: "NO",
   },
   {
-    employeeId: 9,
+    employeeId: "9",
     userId: "ironman",
     name: "아이언맨",
     position: "DIRECTOR",
@@ -265,7 +265,7 @@ export const employees: IEmployee[] = [
     adminYn: "NO",
   },
   {
-    employeeId: 10,
+    employeeId: "10",
     userId: "soldier",
     name: "윈터 솔져",
     position: "MEMBER",
@@ -279,7 +279,7 @@ export const employees: IEmployee[] = [
     adminYn: "NO",
   },
   {
-    employeeId: 11,
+    employeeId: "11",
     userId: "mandalorian",
     name: "만달로리안",
     position: "MANAGING_DIRECTOR",
@@ -293,7 +293,7 @@ export const employees: IEmployee[] = [
     adminYn: "NO",
   },
   {
-    employeeId: 12,
+    employeeId: "12",
     userId: "skywalker",
     name: "스카이워커",
     position: "VICE_PRESIDENT",
@@ -307,7 +307,7 @@ export const employees: IEmployee[] = [
     adminYn: "NO",
   },
   {
-    employeeId: 13,
+    employeeId: "13",
     userId: "superman",
     name: "수퍼맨",
     position: "PRESIDENT",
@@ -321,7 +321,7 @@ export const employees: IEmployee[] = [
     adminYn: "NO",
   },
   {
-    employeeId: 14,
+    employeeId: "14",
     userId: "black-widow",
     name: "블랙위도우",
     position: "ASSISTANT",
@@ -335,7 +335,7 @@ export const employees: IEmployee[] = [
     adminYn: "NO",
   },
   {
-    employeeId: 15,
+    employeeId: "15",
     userId: "spiderman",
     name: "스파이더맨",
     position: "MEMBER",
@@ -349,7 +349,7 @@ export const employees: IEmployee[] = [
     adminYn: "NO",
   },
   {
-    employeeId: 16,
+    employeeId: "16",
     userId: "doctor-strange",
     name: "닥터스트레인지",
     position: "MANAGER",
@@ -363,7 +363,7 @@ export const employees: IEmployee[] = [
     adminYn: "NO",
   },
   {
-    employeeId: 19,
+    employeeId: "19",
     userId: "Tom",
     name: "톰 크루즈",
     position: "ASSISTANT",
