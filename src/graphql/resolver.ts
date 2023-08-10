@@ -17,9 +17,10 @@ import {
   IEmployeeWorkingPage,
   IFile,
   IEmployeeModInput,
+  IChangePwd,
 } from "../data/types.js";
 import { getEmployeeWorking, getEmployeeWorkingConditional, mockTodayEmployeeWorking } from "../data/getMock.js";
-import { addEmployee, changePwd, modEmployee, saveFile } from "./employee.js";
+import { addEmployee, modEmployee, saveFile } from "./employee.js";
 import { login, logout, refresh } from "./authenticate.js";
 
 const pubsub = new PubSub();
@@ -136,17 +137,34 @@ const resolvers = {
       if (user.adminYn === "NO") throw new GraphQLError("IMPOSSIBLE");
 
       const employee = modEmployee(args.employeeId, args.input);
-
       employee && args.file && persistFile(employee, args.file);
-
+      /* if (employee) {
+        if (args.file) persistFile(employee, args.file);
+        else {
+          if (employee.)
+          employee.photoUrl = undefined;
+        }
+      } */
       return employee;
     },
 
-    changePwd: (_: any, args: { employeeId: string; pwd: string }, { user, expired }: IMyContext) => {
+    changePwd: (_: any, args: IChangePwd, { user, expired }: IMyContext) => {
       if (!user) throw new GraphQLError("NO TOKEN");
       if (expired) throw new GraphQLError("EXPIRED");
+      const employee = employees.find((e) => e.employeeId === args.employeeId);
+      if (!employee) throw new GraphQLError("IMPOSSIBLE");
 
-      return changePwd(args.employeeId, args.pwd);
+      if (args.pwd === employee.passwd) throw new GraphQLError("IMPOSSIBLE"); // same as previous password
+
+      // in case of changing his or her own password
+      if (!user.adminYn || user.adminYn !== "YES" || args.prevPwd) {
+        if (user.employeeId !== args.employeeId) throw new GraphQLError("IMPOSSIBLE"); // not allowed to change other's password
+        else if (!args.prevPwd || args.prevPwd !== employee.passwd) throw new GraphQLError("IMPOSSIBLE"); // checking password violation
+      }
+
+      employee.passwd = args.pwd;
+      const department = departments.find((d) => d.departmentId === employee.departmentId);
+      return { ...employee, department, passwd: "" };
     },
 
     goToWork: (_: any, {}, { user, expired }: IMyContext) => {

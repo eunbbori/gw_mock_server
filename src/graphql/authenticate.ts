@@ -54,6 +54,7 @@ export const login = ({ email, passwd }: ILogin, { res }: IMyContext): IAuthInfo
     startAt: working?.startAt,
     endAt: working?.endAt,
     workingType: working ? "WORK" : undefined,
+    lastLogin: employee.lastLogin,
   };
 };
 
@@ -62,6 +63,8 @@ export const refresh = ({ req, res }: IMyContext): IAuthInfo => {
   if (!refreshToken) throw new GraphQLError("NO REFRESH");
 
   const verified: JwtPayload = verifyToken("refresh", refreshToken) as JwtPayload;
+  const employee = employees.find((e) => e.userId === verified.userId);
+  if (!employee) throw new GraphQLError("IMPOSSIBLE");
 
   const tokens: ITokens = getTokens("refresh", { userId: verified.userId, refreshToken });
 
@@ -74,6 +77,7 @@ export const refresh = ({ req, res }: IMyContext): IAuthInfo => {
     startAt: working?.startAt,
     endAt: working?.endAt,
     workingType: working ? "WORK" : undefined,
+    lastLogin: employee.lastLogin,
   };
 };
 

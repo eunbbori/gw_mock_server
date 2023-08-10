@@ -151,6 +151,7 @@ export const employees: IEmployee[] = [
     startDate: new Date("2023-01-01"),
     photoUrl: "employees/gildong.png",
     adminYn: "YES",
+    lastLogin: new Date("2023-08-01T18:00:00"),
   },
   {
     employeeId: "2",
@@ -165,6 +166,7 @@ export const employees: IEmployee[] = [
     startDate: new Date("2023-01-01"),
     photoUrl: "employees/heungmin.jpg",
     adminYn: "NO",
+    lastLogin: new Date("2023-08-01T18:00:00"),
   },
   {
     employeeId: "3",
@@ -179,6 +181,7 @@ export const employees: IEmployee[] = [
     startDate: new Date("2023-01-01"),
     photoUrl: "employees/michael.jpeg",
     adminYn: "YES",
+    lastLogin: new Date("2023-08-01T18:00:00"),
   },
   {
     employeeId: "4",

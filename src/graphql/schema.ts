@@ -5,6 +5,7 @@
 const typeDefs = `#graphql
   # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
   scalar Date
+  scalar DateTime
   scalar Upload
 
   type File {
@@ -101,6 +102,7 @@ const typeDefs = `#graphql
     startAt: Date
     endAt: Date
     workingType: String 
+    lastLogin: Date
   }
 
   # The "Query" type is special: it lists all of the available queries that
@@ -125,7 +127,7 @@ const typeDefs = `#graphql
 
     addEmployee(input: EmployeeInput, file: Upload): Employee
     modEmployee(employeeId: String, input: EmployeeModInput, file:Upload): Employee
-    changePwd(employeeId: String, pwd: String): Employee
+    changePwd(employeeId: String, pwd: String, prevPwd: String): Employee
     singleUpload(employeeId: String, file: Upload!): File!
   }
 

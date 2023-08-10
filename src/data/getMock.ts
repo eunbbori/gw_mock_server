@@ -1,7 +1,7 @@
 import { GraphQLError } from "graphql";
 import { employeeWorkingToday } from "./data.js";
 import { departments, employees } from "./data.js";
-import { IDepartment, IEmployee, IEmployeeWorking, IEmployeeWorkingPage } from "./types.js";
+import { IEmployee, IEmployeeWorking, IEmployeeWorkingPage } from "./types.js";
 import { isToday } from "date-fns";
 
 const WorkingType = [

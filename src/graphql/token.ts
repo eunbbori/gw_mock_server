@@ -22,6 +22,7 @@ export const getTokens = (mode: GetTokensMode, params: IGetTokensParam): ITokens
   const department = departments.find((e) => e.departmentId === user.departmentId);
 
   const payload = {
+    employeeId: user.employeeId,
     userId: user.userId,
     userName: user.name,
     departmentName: department?.departmentName,

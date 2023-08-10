@@ -73,6 +73,13 @@ export interface IEmployee extends IEmployeeInput {
   photoUrl?: string;
   refreshToken?: string;
   adminYn?: string;
+  lastLogin?: Date;
+}
+
+export interface IChangePwd {
+  employeeId: string;
+  pwd: string;
+  prevPwd?: string;
 }
 
 export interface IFile {
@@ -104,6 +111,7 @@ export interface IAttendInfo {
   startAt?: Date;
   endAt?: Date;
   workingType?: string;
+  lastLogin?: Date;
 }
 
 export interface IAuthInfo extends IAttendInfo {
