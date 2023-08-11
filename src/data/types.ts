@@ -52,7 +52,7 @@ export interface IEmployeeWorkingCondition {
   workingType: string[];
 }
 
-export interface IEmployeeModInput {
+interface IEmployeeBaseInput {
   userId: string;
   name: string;
   email: string;
@@ -63,7 +63,11 @@ export interface IEmployeeModInput {
   position: string;
 }
 
-export interface IEmployeeInput extends IEmployeeModInput {
+export interface IEmployeeModInput extends IEmployeeBaseInput {
+  removePhoto: string;
+}
+
+export interface IEmployeeInput extends IEmployeeBaseInput {
   employeeId: string;
   passwd?: string;
 }
@@ -76,10 +80,17 @@ export interface IEmployee extends IEmployeeInput {
   lastLogin?: Date;
 }
 
-export interface IChangePwd {
-  employeeId: string;
+interface ICommonChangePwd {
   pwd: string;
   prevPwd?: string;
+}
+
+export interface IChangePwd extends ICommonChangePwd {
+  employeeId: string;
+}
+
+export interface IChangeFirstPwd extends ICommonChangePwd {
+  email: string;
 }
 
 export interface IFile {

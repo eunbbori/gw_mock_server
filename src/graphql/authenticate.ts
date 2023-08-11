@@ -41,16 +41,22 @@ export const login = ({ email, passwd }: ILogin, { res }: IMyContext): IAuthInfo
   console.log("login start:" + email + "," + passwd);
   const employee = employees.find((e) => e.email === email);
   if (!employee) throw new GraphQLError("IMPOSSIBLE");
+
   const userId = employee.userId;
+  const isFirstLogin = !employee.lastLogin;
 
-  const tokens: ITokens = getTokens("authenticate", { userId, passwd });
+  let tokens: ITokens | undefined = undefined;
+  let working: IEmployeeWorking | undefined;
 
-  res.setHeader("Set-Cookie", serializeHttpOnlyCookie("refreshToken", tokens.refreshToken, 60 * 60 * 24 * 30));
-
-  const working: IEmployeeWorking | undefined = employeeWorkingToday.find((e) => e.userId === userId && isSameDay(e.workingDate, new Date()));
+  if (!isFirstLogin) {
+    tokens = getTokens("authenticate", { userId, passwd });
+    res.setHeader("Set-Cookie", serializeHttpOnlyCookie("refreshToken", tokens.refreshToken, 60 * 60 * 24 * 30));
+    working = employeeWorkingToday.find((e) => e.userId === userId && isSameDay(e.workingDate, new Date()));
+    employee.lastLogin = new Date();
+  }
 
   return {
-    accessToken: tokens.accessToken,
+    accessToken: tokens?.accessToken || "",
     startAt: working?.startAt,
     endAt: working?.endAt,
     workingType: working ? "WORK" : undefined,

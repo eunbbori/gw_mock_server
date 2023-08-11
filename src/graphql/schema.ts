@@ -47,6 +47,7 @@ const typeDefs = `#graphql
     phone: String
     email: String
     startDate: Date
+    removePhoto: String
   }
 
   input EmployeeInput {
@@ -127,7 +128,11 @@ const typeDefs = `#graphql
 
     addEmployee(input: EmployeeInput, file: Upload): Employee
     modEmployee(employeeId: String, input: EmployeeModInput, file:Upload): Employee
+
+    changePwdByAdmin(employeeId: String, pwd:String): Employee
     changePwd(employeeId: String, pwd: String, prevPwd: String): Employee
+    changeFirstPwd(email: String, pwd: String, prevPwd: String): Employee
+
     singleUpload(employeeId: String, file: Upload!): File!
   }
 

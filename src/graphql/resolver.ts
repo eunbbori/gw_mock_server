@@ -18,6 +18,7 @@ import {
   IFile,
   IEmployeeModInput,
   IChangePwd,
+  IChangeFirstPwd,
 } from "../data/types.js";
 import { getEmployeeWorking, getEmployeeWorkingConditional, mockTodayEmployeeWorking } from "../data/getMock.js";
 import { addEmployee, modEmployee, saveFile } from "./employee.js";
@@ -137,32 +138,52 @@ const resolvers = {
       if (user.adminYn === "NO") throw new GraphQLError("IMPOSSIBLE");
 
       const employee = modEmployee(args.employeeId, args.input);
-      employee && args.file && persistFile(employee, args.file);
-      /* if (employee) {
+      //employee && args.file && persistFile(employee, args.file);
+      if (employee) {
         if (args.file) persistFile(employee, args.file);
         else {
-          if (employee.)
-          employee.photoUrl = undefined;
+          if (args.input.removePhoto && args.input.removePhoto.toUpperCase() === "YES") employee.photoUrl = undefined;
         }
-      } */
+      }
       return employee;
+    },
+
+    changePwdByAdmin: (_: any, args: IChangePwd, { user, expired }: IMyContext) => {
+      if (!user) throw new GraphQLError("NO TOKEN");
+      if (expired) throw new GraphQLError("EXPIRED");
+
+      const employee = employees.find((e) => e.employeeId === args.employeeId);
+      if (!employee) throw new GraphQLError("IMPOSSIBLE");
+
+      if (employee.passwd === args.pwd) throw new GraphQLError("INVALID"); // same as previous password!
+
+      employee.passwd = args.pwd;
+      const department = departments.find((d) => d.departmentId === employee.departmentId);
+      return { ...employee, department, passwd: "" };
     },
 
     changePwd: (_: any, args: IChangePwd, { user, expired }: IMyContext) => {
       if (!user) throw new GraphQLError("NO TOKEN");
       if (expired) throw new GraphQLError("EXPIRED");
-      const employee = employees.find((e) => e.employeeId === args.employeeId);
-      if (!employee) throw new GraphQLError("IMPOSSIBLE");
 
-      if (args.pwd === employee.passwd) throw new GraphQLError("IMPOSSIBLE"); // same as previous password
+      if (user.employeeId !== args.employeeId) throw new GraphQLError("IMPOSSIBLE"); // Not Myself!
+      if (!args.prevPwd || user.passwd !== args.prevPwd) throw new GraphQLError("INCORRECT"); // Password Incorrect!
+      if (user.passwd === args.pwd) throw new GraphQLError("INVALID"); // same as previous password
 
-      // in case of changing his or her own password
-      if (!user.adminYn || user.adminYn !== "YES" || args.prevPwd) {
-        if (user.employeeId !== args.employeeId) throw new GraphQLError("IMPOSSIBLE"); // not allowed to change other's password
-        else if (!args.prevPwd || args.prevPwd !== employee.passwd) throw new GraphQLError("IMPOSSIBLE"); // checking password violation
-      }
+      user.passwd = args.pwd;
+      const department = departments.find((d) => d.departmentId === user.departmentId);
+      return { ...user, department, passwd: "" };
+    },
+
+    changeFirstPwd: (_: any, args: IChangeFirstPwd, __: IMyContext) => {
+      const employee = employees.find((e) => e.email === args.email);
+      if (!employee) throw new GraphQLError("IMPOSSIBLE"); // Not Exist!
+
+      if (!args.prevPwd || employee.passwd !== args.prevPwd) throw new GraphQLError("INCORRECT"); // Password Incorrect!
+      if (employee.passwd === args.pwd) throw new GraphQLError("INVALID"); // same as previous password!
 
       employee.passwd = args.pwd;
+      employee.lastLogin = new Date();
       const department = departments.find((d) => d.departmentId === employee.departmentId);
       return { ...employee, department, passwd: "" };
     },
